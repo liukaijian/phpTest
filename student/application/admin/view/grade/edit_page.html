@@ -1,0 +1,90 @@
+{extend name="public/base"}
+{block name='header'}{/block}
+{block name="menu"}{/block}
+{block name='seo'}
+<title>{$title}</title>
+<meta name="keywords" content={$keywords}>
+<meta name="description" content={$desc}>
+</head>
+<body>
+{/block}
+{block name="content"}
+<article class="cl pd-20">
+	<form action="" method="post" class="form form-horizontal" id="form-grade">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>班级名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.name}" id='class_name' placeholder="" id="adminName" name="name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学制：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.length}" placeholder="" id="adminName" name="length">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学费：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.price}" placeholder="" id="adminName" name="price">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>授课老师：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text disabled" value="{$list.teacher}" placeholder="" id="adminName" name="teacher">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">状态：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+				<select class="select" name="status" size="1">
+					<option value="0" {$list.status=='未启用'?"selected":'';}>未启用</option>
+					<option value="1" {$list.status=='已启用'?"selected":'';}>已启用</option>
+				</select>
+				</span> </div>
+		</div>
+		<input type="hidden" value='{$list.id}' name="id">
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius disabled" id='submit' type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+{/block}
+{block name="js"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__ADMIN__/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__ADMIN__/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__ADMIN__/lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript">
+	$(function(){
+		$('#form-grade').children().change(function(){
+			$('#submit').removeClass('disabled');
+		})
+		
+		//提交班级名单
+		$('#submit').click(function(){
+			$.ajax({
+				type:'post',
+				url:'{:url("admin/grade/doEdit")}',
+				data:$('#form-grade').serialize(),
+				success:function(data){
+					if(data.status==1){
+						alert(data.message);
+					}else{
+						alert(data.message);
+					}
+				}
+			})
+			return false;
+		})
+	})
+	
+</script>
+{/block}
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
